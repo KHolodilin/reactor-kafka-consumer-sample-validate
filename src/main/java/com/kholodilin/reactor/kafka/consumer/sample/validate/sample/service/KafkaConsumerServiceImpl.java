@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import reactor.kafka.receiver.KafkaReceiver;
-
 import javax.annotation.PostConstruct;
 
 
@@ -14,7 +13,7 @@ import javax.annotation.PostConstruct;
 @Service
 public class KafkaConsumerServiceImpl implements KafkaConsumerService {
     private final KafkaReceiver<String, String> kafkaReceiver;
-
+    private final KafkaMessageService kafkaMessageService;
     @PostConstruct
     private void checkProperties() {
         Assert.notNull(kafkaReceiver, "A kafkaReceiver must be provided");
@@ -22,6 +21,10 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
     public void receive() {
         kafkaReceiver.receive()
+                .concatMap(record -> kafkaMessageService
+                        .parse(record.value())
+                        .thenReturn(record)
+                )
                 .concatMap(record -> record.receiverOffset().commit())
                 .subscribe();
     }
