@@ -1,0 +1,50 @@
+server:
+  port: 8888
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web.exposure.include: health,prometheus,info
+  endpoint:
+    health.enabled: true
+    prometheus.enabled: true
+    beans.enabled: true
+    mappings.enabled: true
+    info.enabled: true
+  info:
+    java.enabled: true
+    env.enabled: true
+    git.enabled: true
+
+info:
+  application:
+    name: ${spring.application.name}
+    version: '@project.version@'
+  developer: KHolodilin Valeriy
+
+logging:
+  level:
+    root: info
+    com.com.kholodilin.*: debug
+
+
+kafka:
+  bootstrap-servers: localhost:9092
+  topics: sample-validate
+  ssl:
+    enabled: false
+    keystore:
+      type: PKCS12
+      password:
+      location:
+    truststore:
+      type: PKCS12
+      password:
+      location:
+    key:
+      password:
+  consumer:
+    group-id: sample-validate
+    enable-auto-commit: false
+    auto-offset-reset: earliest
+    nack-sleep: 10000
