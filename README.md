@@ -1,5 +1,8 @@
 # reactor-kafka consumer, manual offset commit
 
+![Java](https://img.shields.io/badge/Java-11-blue)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.11-brightgreen)
+
 Small Spring Boot app that reads Kafka with reactor-kafka. `KafkaReceiver` takes messages from the topic and commits the offset manually. SSL is in the config, off by default.
 
 Java 11, Spring Boot 2.7.
